@@ -27,8 +27,8 @@ from torch.distributed.fsdp.wrap import (
 )
 
 def setup(rank, world_size, master_ip, master_port):
-    # os.environ['MASTER_ADDR'] = master_ip
-    # os.environ['MASTER_PORT'] = master_port
+    os.environ['MASTER_ADDR'] = master_ip
+    os.environ['MASTER_PORT'] = master_port
 
     # initialize the process group
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
