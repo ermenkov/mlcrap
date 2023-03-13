@@ -26,9 +26,9 @@ from torch.distributed.fsdp.wrap import (
     wrap,
 )
 
-def setup(rank, world_size):
-    os.environ['MASTER_ADDR'] = 'localhost'
-    os.environ['MASTER_PORT'] = '12355'
+def setup(rank, world_size, master_ip, master_port):
+    os.environ['MASTER_ADDR'] = master_ip
+    os.environ['MASTER_PORT'] = master_port
 
     # initialize the process group
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
@@ -103,7 +103,9 @@ def test(model, rank, world_size, test_loader):
             100. * ddp_loss[1] / ddp_loss[2]))
             
 def fsdp_main(rank, world_size, args):
-    setup(rank, world_size)
+    print(f"Running basic DDP example on rank {rank}.")
+    setup(rank, world_size, args.master_ip, args.master_port)
+    
 
     transform=transforms.Compose([
         transforms.ToTensor(),
@@ -185,6 +187,9 @@ if __name__ == '__main__':
                         help='random seed (default: 1)')
     parser.add_argument('--save-model', action='store_true', default=False,
                         help='For Saving the current Model')
+    parser.add_argument('--master-ip', default="localhost", help='Master IP')
+    parser.add_argument('--master-port', default="5969", help='Master port')
+
     args = parser.parse_args()
 
     torch.manual_seed(args.seed)
