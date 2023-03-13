@@ -204,3 +204,6 @@ About
 
 # data
 data/
+
+# Snapshots
+*.pt
