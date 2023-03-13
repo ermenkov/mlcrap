@@ -103,7 +103,8 @@ def test(model, rank, world_size, test_loader):
             100. * ddp_loss[1] / ddp_loss[2]))
             
 def fsdp_main(rank, world_size, args):
-    print(f"Running basic DDP example on rank {rank}.")
+    print(int(os.environ["RANK"]))
+    print(f"Running basic DDP example on local rank {rank}.")
     setup(rank, world_size, args.master_ip, args.master_port)
     
 
