@@ -26,10 +26,6 @@ class Trainer:
     ) -> None:
         self.local_rank = int(os.environ["LOCAL_RANK"])
         self.global_rank = int(os.environ["RANK"])
-        
-        print(f"Initializing Trainer on GPU {self.local_rank}")
-        print(f"Global Rank: {self.global_rank}")
-
         self.model = model.to(self.local_rank)
         self.train_data = train_data
         self.optimizer = optimizer
@@ -108,10 +104,17 @@ def main(save_every: int, total_epochs: int, batch_size: int, snapshot_path: str
 
 if __name__ == "__main__":
     import argparse
+
+    local_rank = int(os.environ["LOCAL_RANK"])
+    global_rank = int(os.environ["RANK"])
+
+    print(f"Initializing Trainer on GPU {local_rank}")
+    print(f"Global Rank: {global_rank}")
+
     parser = argparse.ArgumentParser(description='simple distributed training job')
     parser.add_argument('total_epochs', type=int, help='Total epochs to train the model')
     parser.add_argument('save_every', type=int, help='How often to save a snapshot')
     parser.add_argument('--batch_size', default=32, type=int, help='Input batch size on each device (default: 32)')
     args = parser.parse_args()
     
-    main(args.save_every, args.total_epochs, args.batch_size)
+    # main(args.save_every, args.total_epochs, args.batch_size)
