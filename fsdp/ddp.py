@@ -26,6 +26,10 @@ class Trainer:
     ) -> None:
         self.local_rank = int(os.environ["LOCAL_RANK"])
         self.global_rank = int(os.environ["RANK"])
+        
+        print(f"Initializing Trainer on GPU {self.local_rank}")
+        print(f"Global Rank: {self.global_rank}")
+
         self.model = model.to(self.local_rank)
         self.train_data = train_data
         self.optimizer = optimizer
