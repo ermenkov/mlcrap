@@ -200,3 +200,15 @@ if __name__ == '__main__':
         args=(WORLD_SIZE, args),
         nprocs=WORLD_SIZE,
         join=True)
+
+
+# Run with
+# rank 0
+# torchrun --nnodes=2 --nproc_per_node=1 --node_rank=0 --rdzv_id=103 --rdzv_backend=c10d --rdzv_endpoint=152-70-112-92:29603 FSDB_mnist.py --master-ip=152-70-112-92 --master-port=29604
+# rank 1
+# torchrun --nnodes=2 --nproc_per_node=1 --node_rank=1 --rdzv_id=103 --rdzv_backend=c10d --rdzv_endpoint=152-70-112-92:29603 FSDB_mnist.py --master-ip=152-70-112-92 --master-port=29603
+
+# TODO figure out 29603 and 29604
+
+# Debugging
+# export NCCL_DEBUG=INFO
