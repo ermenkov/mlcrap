@@ -154,6 +154,7 @@ def fsdp_main(rank, world_size, args):
         scheduler.step()
 
     init_end_event.record()
+    torch.cuda.synchronize()
 
     if rank == 0:
         print(f"CUDA event elapsed time: {init_start_event.elapsed_time(init_end_event) / 1000}sec")
@@ -204,9 +205,9 @@ if __name__ == '__main__':
 
 # Run with
 # rank 0
-# torchrun --nnodes=2 --nproc_per_node=1 --node_rank=0 --rdzv_id=103 --rdzv_backend=c10d --rdzv_endpoint=152-70-112-92:29603 FSDB_mnist.py --master-ip=152-70-112-92 --master-port=29604
+# torchrun --nnodes=2 --nproc_per_node=1 --node_rank=0 --rdzv_id=103 --rdzv_backend=c10d --rdzv_endpoint=155-248-214-232:29603 FSDB_mnist.py --master-ip=155-248-214-232 --master-port=29604
 # rank 1
-# torchrun --nnodes=2 --nproc_per_node=1 --node_rank=1 --rdzv_id=103 --rdzv_backend=c10d --rdzv_endpoint=152-70-112-92:29603 FSDB_mnist.py --master-ip=152-70-112-92 --master-port=29603
+# torchrun --nnodes=2 --nproc_per_node=1 --node_rank=1 --rdzv_id=103 --rdzv_backend=c10d --rdzv_endpoint=155-248-214-232:29603 FSDB_mnist.py --master-ip=155-248-214-232 --master-port=29603
 
 # TODO figure out 29603 and 29604
 
